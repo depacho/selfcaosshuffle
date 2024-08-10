@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>抽選機能</title>
+    <title>セルフカオスシャッフル</title>
     <style>
         body {
             display: flex;
@@ -50,6 +50,7 @@
     </div>
     <img src="https://raw.githubusercontent.com/depacho/selfcaosshuffle/main/randomlogo.png" alt="title" /> <!-- タイトル画像を設定 -->
 
+
     <!-- ボタンとラジオボタンの配置 -->
     <div class="controls">
         <button class="button" onclick="drawLottery()">抽選する</button>
@@ -82,9 +83,8 @@
             fetch(dataSources[selectedSource])
                 .then(response => response.text())
                 .then(data => {
-                    // データを★で分割して選択肢を取得し、空要素を除外
-                    const rawOptions = data.split(/★/).filter(Boolean).map(option => option.trim());
-                    options = rawOptions.filter(option => option.length > 0); // 空でない要素のみ
+                    const rawOptions = data.split(/★/).filter(Boolean); // ★で分割して空でない要素を取得
+                    options = rawOptions.map(option => option.trim()).filter(option => option.length > 0); // 空文字を排除
                 })
                 .catch(error => console.error('Error loading data:', error));
         }
@@ -96,11 +96,10 @@
 
         function drawLottery() {
             if (options.length === 0) {
-                // optionsが空の場合は何も表示しない
                 for (let i = 0; i < 4; i++) {
-                    document.getElementById(`result${i + 1}`).innerHTML = ''; // 空白を防ぐ
+                    document.getElementById(`result${i + 1}`).innerHTML = ''; // 空の場合は何も表示しない
                 }
-                return;
+                return; // optionsが空の場合の処理を終了
             }
 
             // 選択肢をシャッフルして4つ選ぶ
@@ -110,7 +109,7 @@
             // 結果を表示
             for (let i = 0; i < 4; i++) {
                 if (selected[i]) {
-                    document.getElementById(`result${i + 1}`).innerHTML = `☆${selected[i]}`; // ☆を追加
+                    document.getElementById(`result${i + 1}`).innerHTML = `☆ ${selected[i]}`; // 頭に「☆」を追加
                 } else {
                     document.getElementById(`result${i + 1}`).innerHTML = ''; // 空白を表示しない
                 }
