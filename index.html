@@ -1,10 +1,9 @@
-<!-- main.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>セルフカオスシャッフル</title>
+    <title>抽選機能</title>
     <style>
         body {
             display: flex;
@@ -47,14 +46,16 @@
 </head>
 <body>
    <img src="https://raw.githubusercontent.com/depacho/selfcaosshuffle/main/randomlogo.png" alt="title" /> <!-- タイトル画像を設定 -->
-    <!-- ボタンとラジオボタンの配置 -->
+
+
+
     <div class="controls">
         <button class="button" onclick="drawLottery()">抽選する</button>
         <div>
             <input type="radio" id="data1" name="dataSource" value="data1" checked>
-            <label for="data1">キラーパーク</label>
+            <label for="data1">Data 1</label>
             <input type="radio" id="data2" name="dataSource" value="data2">
-            <label for="data2">サバイバーパーク</label>
+            <label for="data2">Data 2</label>
         </div>
     </div>
 
@@ -78,10 +79,11 @@
             fetch(dataSources[selectedSource])
                 .then(response => response.text())
                 .then(data => {
-                    // 正しいHTMLとして処理
+                    // データの整形と選択肢の読み込み
                     const rawOptions = data.split(/★/).filter(Boolean);
                     options = rawOptions.map(option => option.trim()).filter(Boolean);
-                });
+                })
+                .catch(error => console.error('Error loading data:', error));
         }
 
         document.querySelectorAll('input[name="dataSource"]').forEach((radio) => {
@@ -89,21 +91,23 @@
         });
 
         function drawLottery() {
-            if (options.length === 0) return; // optionsが空の場合は何も表示しない
-            const shuffled = [...options].sort(() => 0.5 - Math.random()); // シャッフルしたコピーを作成
+            if (options.length === 0) {
+                return; // optionsが空の場合は何も表示しない
+            }
+
+            // シャッフルして選択肢を取得
+            const shuffled = [...options].sort(() => Math.random() - 0.5);
             const selected = shuffled.slice(0, 4);
 
             // 結果を表示
             for (let i = 0; i < 4; i++) {
                 const resultElement = document.getElementById(`result${i + 1}`);
-                resultElement.innerHTML = selected[i] || ''; // innerHTMLを使用してHTMLを解析
-                if (resultElement.innerHTML === '') {
-                    resultElement.innerHTML = "結果がありません"; // 空の結果の場合
-                }
+                resultElement.innerHTML = selected[i] || '結果がありません'; // innerHTMLを使用
             }
         }
 
-        loadOptions(); // 初回読み込み時にデフォルトのデータソースを読み込む
+        // 初回読み込み時にデフォルトのデータソースを読み込む
+        loadOptions();
     </script>
 </body>
 </html>
