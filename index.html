@@ -1,3 +1,4 @@
+<!-- main.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -45,18 +46,15 @@
     </style>
 </head>
 <body>
-    <font size="1"> 作成者@deppa_game</font>
-    <font size="1">最終更新：2024/08/10</font>
-    
-    <img src="https://raw.githubusercontent.com/depacho/selfcaosshuffle/main/randomlogo.png" alt="title" /> <!-- タイトル画像を設定 -->
+   <img src="https://raw.githubusercontent.com/depacho/selfcaosshuffle/main/randomlogo.png" alt="title" /> <!-- タイトル画像を設定 -->
     <!-- ボタンとラジオボタンの配置 -->
     <div class="controls">
         <button class="button" onclick="drawLottery()">抽選する</button>
         <div>
             <input type="radio" id="data1" name="dataSource" value="data1" checked>
-            <label for="data1">Data 1</label>
+            <label for="data1">キラーパーク</label>
             <input type="radio" id="data2" name="dataSource" value="data2">
-            <label for="data2">Data 2</label>
+            <label for="data2">サバイバーパーク</label>
         </div>
     </div>
 
@@ -80,6 +78,7 @@
             fetch(dataSources[selectedSource])
                 .then(response => response.text())
                 .then(data => {
+                    // 正しいHTMLとして処理
                     const rawOptions = data.split(/★/).filter(Boolean);
                     options = rawOptions.map(option => option.trim()).filter(Boolean);
                 });
@@ -94,12 +93,17 @@
             const shuffled = [...options].sort(() => 0.5 - Math.random()); // シャッフルしたコピーを作成
             const selected = shuffled.slice(0, 4);
 
+            // 結果を表示
             for (let i = 0; i < 4; i++) {
-                document.getElementById(`result${i + 1}`).innerHTML = selected[i] || ''; // innerHTMLを使用
+                const resultElement = document.getElementById(`result${i + 1}`);
+                resultElement.innerHTML = selected[i] || ''; // innerHTMLを使用してHTMLを解析
+                if (resultElement.innerHTML === '') {
+                    resultElement.innerHTML = "結果がありません"; // 空の結果の場合
+                }
             }
         }
 
-        loadOptions();
+        loadOptions(); // 初回読み込み時にデフォルトのデータソースを読み込む
     </script>
 </body>
 </html>
