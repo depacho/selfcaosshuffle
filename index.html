@@ -35,10 +35,8 @@
         }
         #results {
             text-align: left; /* 結果を左揃えに */
-             justify-content: center; /* 中央に配置 */
-            align-items: center; /* 垂直方向中央揃え */
             margin-top: 20px; /* 結果表示前に余白を追加 */
-            max-width: 600px; /* 最大幅を設定 */
+            max-width: 500px; /* 最大幅を設定 */
             width: 100%; /* 幅を100%に */
         }
         .result {
@@ -48,7 +46,7 @@
     </style>
 </head>
 <body>
-  <font size="1"> 作成者@deppa_game</font>
+    <font size="1"> 作成者@deppa_game</font>
     <font size="1">最終更新：2024/08/10</font>
     
     <img src="https://raw.githubusercontent.com/depacho/selfcaosshuffle/main/randomlogo.png" alt="title" /> <!-- タイトル画像を設定 -->
@@ -57,9 +55,9 @@
         <button class="button" onclick="drawLottery()">抽選する</button>
         <div>
             <input type="radio" id="data1" name="dataSource" value="data1" checked>
-            <label for="data1">キラーパーク</label>
+            <label for="data1">Data 1</label>
             <input type="radio" id="data2" name="dataSource" value="data2">
-            <label for="data2">サバイバーパーク</label>
+            <label for="data2">Data 2</label>
         </div>
     </div>
 
@@ -101,7 +99,7 @@
 
             // 結果を表示
             for (let i = 0; i < 4; i++) {
-                document.getElementById(`result${i + 1}`).innerText = selected[i] || '';
+                document.getElementById(`result${i + 1}`).innerHTML = selected[i] || ''; // innerHTMLを使用
             }
         }
 
