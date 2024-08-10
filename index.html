@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>セルフカオスシャッフル</title>
+    <title>抽選機能</title>
     <style>
         body {
             display: flex;
@@ -50,7 +50,6 @@
     </div>
     <img src="https://raw.githubusercontent.com/depacho/selfcaosshuffle/main/randomlogo.png" alt="title" /> <!-- タイトル画像を設定 -->
 
-
     <!-- ボタンとラジオボタンの配置 -->
     <div class="controls">
         <button class="button" onclick="drawLottery()">抽選する</button>
@@ -61,14 +60,12 @@
             <label for="data2">サバイバーパーク</label>
         </div>
     </div>
-
     <div id="results">
         <div class="result" id="result1"></div>
         <div class="result" id="result2"></div>
         <div class="result" id="result3"></div>
         <div class="result" id="result4"></div>
     </div>
-
     <script>
         let options = [];
         const dataSources = {
@@ -76,10 +73,8 @@
             data2: 'data2.html'
         };
 
-        // 選択されたデータソースに基づいて選択肢を読み込む
         function loadOptions() {
             const selectedSource = document.querySelector('input[name="dataSource"]:checked').value;
-
             fetch(dataSources[selectedSource])
                 .then(response => response.text())
                 .then(data => {
@@ -89,7 +84,6 @@
                 .catch(error => console.error('Error loading data:', error));
         }
 
-        // ラジオボタンの変更を監視してオプションを再読み込み
         document.querySelectorAll('input[name="dataSource"]').forEach((radio) => {
             radio.addEventListener('change', loadOptions);
         });
@@ -99,24 +93,21 @@
                 for (let i = 0; i < 4; i++) {
                     document.getElementById(`result${i + 1}`).innerHTML = ''; // 空の場合は何も表示しない
                 }
-                return; // optionsが空の場合の処理を終了
+                return;
             }
 
-            // 選択肢をシャッフルして4つ選ぶ
             const shuffled = [...options].sort(() => Math.random() - 0.5);
             const selected = shuffled.slice(0, 4);
 
-            // 結果を表示
             for (let i = 0; i < 4; i++) {
-                if (selected[i]) {
-                    document.getElementById(`result${i + 1}`).innerHTML = `☆ ${selected[i]}`; // 頭に「☆」を追加
+                if (i < selected.length) { // 選ばれた数だけ表示
+                    document.getElementById(`result${i + 1}`).innerHTML = `☆ ${selected[i]}`;
                 } else {
-                    document.getElementById(`result${i + 1}`).innerHTML = ''; // 空白を表示しない
+                    document.getElementById(`result${i + 1}`).innerHTML = ''; // 残りは空に
                 }
             }
         }
 
-        // 初回読み込み時にデフォルトのデータソースを読み込む
         loadOptions();
     </script>
 </body>
