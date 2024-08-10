@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>セルフカオスシャッフル</title>
+    <title>抽選機能</title>
     <style>
         body {
             display: flex;
@@ -79,9 +79,11 @@
             fetch(dataSources[selectedSource])
                 .then(response => response.text())
                 .then(data => {
-                    const rawOptions = data.split(/★/).filter(Boolean);
-                    options = rawOptions.map(option => option.replace(/<br>/g, "\n").trim()).filter(Boolean);
-                });
+                    // データを★で分割して選択肢を取得し、空要素を除外
+                    const rawOptions = data.split(/★/).filter(Boolean).map(option => option.trim());
+                    options = rawOptions.filter(option => option.length > 0); // 空でない要素のみ
+                })
+                .catch(error => console.error('Error loading data:', error));
         }
 
         // ラジオボタンの変更を監視してオプションを再読み込み
@@ -90,13 +92,25 @@
         });
 
         function drawLottery() {
+            if (options.length === 0) {
+                // optionsが空の場合は何も表示しない
+                for (let i = 0; i < 4; i++) {
+                    document.getElementById(`result${i + 1}`).innerHTML = ''; // 空白を防ぐ
+                }
+                return;
+            }
+
             // 選択肢をシャッフルして4つ選ぶ
-            const shuffled = options.sort(() => 0.5 - Math.random()).slice(0, 4); // ランダムで選択
+            const shuffled = [...options].sort(() => Math.random() - 0.5);
+            const selected = shuffled.slice(0, 4);
 
             // 結果を表示
             for (let i = 0; i < 4; i++) {
-                const resultElement = document.getElementById(`result${i + 1}`);
-                resultElement.innerHTML = shuffled[i] ? `☆ ${shuffled[i]}` : ''; // 頭に「☆」を追加
+                if (selected[i]) {
+                    document.getElementById(`result${i + 1}`).innerHTML = `☆ ${selected[i]}`; // ☆を追加
+                } else {
+                    document.getElementById(`result${i + 1}`).innerHTML = ''; // 空白を表示しない
+                }
             }
         }
 
