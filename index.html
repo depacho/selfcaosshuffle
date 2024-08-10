@@ -1,4 +1,3 @@
-<!-- main.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -92,15 +91,13 @@
 
         function drawLottery() {
             // 選択肢をシャッフルして4つ選ぶ
-            const shuffled = options.sort(() => 0.5 - Math.random());
-            const selected = shuffled.slice(0, 4);
+            const shuffled = options.sort(() => 0.5 - Math.random()).slice(0, 4); // ランダムで選択
 
             // 結果を表示
             for (let i = 0; i < 4; i++) {
-                const resultText = selected[i] ? `☆ ${selected[i]}` : ''; // 頭に「☆」を追加
-                document.getElementById(`result${i + 1}`).innerHTML = resultText; // innerHTMLを使用
+                const resultElement = document.getElementById(`result${i + 1}`);
+                resultElement.innerHTML = shuffled[i] ? `☆ ${shuffled[i]}` : ''; // 頭に「☆」を追加
             }
-
         }
 
         // 初回読み込み時にデフォルトのデータソースを読み込む
