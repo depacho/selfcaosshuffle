@@ -1,3 +1,4 @@
+<!-- main.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,46 +8,47 @@
     <style>
         body {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-direction: column; /* 縦方向に配置 */
+            align-items: center; /* 水平中央揃え */
             height: 100vh;
-            background-color: black;
-            color: white;
-            font-weight: bold;
-            padding: 0;
-            margin: 0;
+            background-color: black; /* 背景色を黒に */
+            color: white; /* 文字色を白に */
+            font-weight: bold; /* 文字を太字に */
+            padding: 0; /* 上部の余白をなしに */
+            margin: 0; /* デフォルトのマージンをなしに */
         }
         .controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
+            display: flex; /* ボタンとラジオボタンを横並びに */
+            justify-content: center; /* 中央に配置 */
+            align-items: center; /* 垂直方向中央揃え */
+            margin-top: 20px; /* 余白を設定 */
         }
         .button {
-            background-color: red;
-            color: white;
+            background-color: red; /* ボタンの背景色を赤に */
+            color: white; /* ボタンの文字色を白に */
             padding: 10px 20px;
             font-size: 16px;
             border: none;
             cursor: pointer;
             border-radius: 5px;
-            margin-right: 10px;
+            margin-right: 10px; /* ラジオボタンとボタンの間に余白 */
         }
         #results {
-            text-align: left;
-            margin-top: 20px;
-            max-width: 500px;
-            width: 100%;
+            text-align: left; /* 結果を左揃えに */
+            margin-top: 20px; /* 結果表示前に余白を追加 */
+            max-width: 500px; /* 最大幅を設定 */
+            width: 100%; /* 幅を100%に */
         }
         .result {
-            font-size: 20px;
-            margin-top: 5px;
+            font-size: 20px; /* 結果の文字サイズを大きく */
+            margin-top: 5px; /* 結果ごとの余白 */
         }
     </style>
 </head>
 <body>
    <img src="https://raw.githubusercontent.com/depacho/selfcaosshuffle/main/randomlogo.png" alt="title" /> <!-- タイトル画像を設定 -->
 
+    <!-- ボタンとラジオボタンの配置 -->
     <div class="controls">
         <button class="button" onclick="drawLottery()">抽選する</button>
         <div>
@@ -71,37 +73,34 @@
             data2: 'data2.html'
         };
 
+        // 選択されたデータソースに基づいて選択肢を読み込む
         function loadOptions() {
             const selectedSource = document.querySelector('input[name="dataSource"]:checked').value;
 
             fetch(dataSources[selectedSource])
                 .then(response => response.text())
                 .then(data => {
-                    // `★`で区切って選択肢を取得
-                    const rawOptions = data.split(/★/).filter(Boolean).map(option => option.trim());
-                    options = rawOptions;
-                })
-                .catch(error => console.error('Error loading data:', error));
+                    const rawOptions = data.split(/★/).filter(Boolean);
+                    options = rawOptions.map(option => option.replace(/<br>/g, "\n").trim()).filter(Boolean);
+                });
         }
 
+        // ラジオボタンの変更を監視してオプションを再読み込み
         document.querySelectorAll('input[name="dataSource"]').forEach((radio) => {
             radio.addEventListener('change', loadOptions);
         });
 
         function drawLottery() {
-            if (options.length === 0) {
-                return; // optionsが空の場合は何も表示しない
-            }
-
-            // シャッフルして選択肢を取得
-            const shuffled = [...options].sort(() => Math.random() - 0.5);
+            // 選択肢をシャッフルして4つ選ぶ
+            const shuffled = options.sort(() => 0.5 - Math.random());
             const selected = shuffled.slice(0, 4);
 
-            // 結果を表示、各項目の頭に「☆」を追加
+            // 結果を表示
             for (let i = 0; i < 4; i++) {
-                const resultElement = document.getElementById(`result${i + 1}`);
-                resultElement.innerHTML = selected[i] ? `☆ ${selected[i]}` : '結果がありません';
+                const resultText = selected[i] ? `☆ ${selected[i]}` : ''; // 頭に「☆」を追加
+                document.getElementById(`result${i + 1}`).innerHTML = resultText; // innerHTMLを使用
             }
+
         }
 
         // 初回読み込み時にデフォルトのデータソースを読み込む
