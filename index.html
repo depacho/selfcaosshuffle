@@ -8,20 +8,19 @@
     <style>
         body {
             display: flex;
-            justify-content: center; /* 水平方向中央揃え */
-            align-items: flex-start; /* 上部に配置 */
-            height: 100vh;
             flex-direction: column; /* 縦方向に配置 */
+            align-items: center; /* 水平中央揃え */
+            height: 100vh;
             background-color: black; /* 背景色を黒に */
             color: white; /* 文字色を白に */
             font-weight: bold; /* 文字を太字に */
             padding: 0; /* 上部の余白をなしに */
-            text-align: center; /* テキストを中央に */
+            margin: 0; /* デフォルトのマージンをなしに */
         }
         .controls {
             display: flex; /* ボタンとラジオボタンを横並びに */
             justify-content: center; /* 中央に配置 */
-            align-items: center; /*垂直方向中央揃え */
+            align-items: center; /* 垂直方向中央揃え */
             margin-top: 20px; /* 余白を設定 */
         }
         .button {
@@ -34,31 +33,23 @@
             border-radius: 5px;
             margin-right: 10px; /* ラジオボタンとボタンの間に余白 */
         }
+        #results {
+            text-align: left; /* 結果を左揃えに */
+            margin-top: 20px; /* 結果表示前に余白を追加 */
+            max-width: 500px; /* 最大幅を設定 */
+            width: 100%; /* 幅を100%に */
+        }
         .result {
             font-size: 20px; /* 結果の文字サイズを大きく */
-          /*  text-align: left;  左揃えにする */
-            margin-top: 20px; /* 結果表示の上に余白を設定 */
-            width: 100%; /* 幅を100%に */
-            display: block; /* ブロック要素として表示 */
-            max-width: 900px; /* 最大幅を設定（適宜調整可） */
-        }
-        #results {
-         /*   text-align: left; /*結果を左揃えに */
-            margin-top: 20px; /* 結果表示前に余白を追加 */
-            width: 100%; /* 幅を100%に */
-            display: flex; /* フレックスボックスを使用 */
-            flex-direction: column; /* 縦に並べる */
-       /* align-items: flex-start; /* 左揃えにする */
-            margin: 0 auto; /* 中央揃え */
+            margin-top: 5px; /* 結果ごとの余白 */
         }
     </style>
 </head>
 <body>
-    <img src="https://raw.githubusercontent.com/depacho/selfcaosshuffle/main/randomlogo.png" alt="title" /> <!-- タイトル画像を設定 -->
+ <img src="https://raw.githubusercontent.com/depacho/selfcaosshuffle/main/randomlogo.png" alt="title" /> <!-- タイトル画像を設定 -->
 
   <font size="2">最終更新：2024/08/10</font>
    <font size="1"> 作成者@deppa_game</font>
-    
 
     <!-- ボタンとラジオボタンの配置 -->
     <div class="controls">
