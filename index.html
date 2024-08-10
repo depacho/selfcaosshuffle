@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>抽選機能</title>
+    <title>セルフカオスシャッフル</title>
     <style>
         body {
             display: flex;
@@ -47,15 +47,13 @@
 <body>
    <img src="https://raw.githubusercontent.com/depacho/selfcaosshuffle/main/randomlogo.png" alt="title" /> <!-- タイトル画像を設定 -->
 
-
-
     <div class="controls">
         <button class="button" onclick="drawLottery()">抽選する</button>
         <div>
             <input type="radio" id="data1" name="dataSource" value="data1" checked>
-            <label for="data1">Data 1</label>
+            <label for="data1">キラーパーク</label>
             <input type="radio" id="data2" name="dataSource" value="data2">
-            <label for="data2">Data 2</label>
+            <label for="data2">サバイバーパーク</label>
         </div>
     </div>
 
@@ -79,9 +77,9 @@
             fetch(dataSources[selectedSource])
                 .then(response => response.text())
                 .then(data => {
-                    // データの整形と選択肢の読み込み
-                    const rawOptions = data.split(/★/).filter(Boolean);
-                    options = rawOptions.map(option => option.trim()).filter(Boolean);
+                    // `★`で区切って選択肢を取得
+                    const rawOptions = data.split(/★/).filter(Boolean).map(option => option.trim());
+                    options = rawOptions;
                 })
                 .catch(error => console.error('Error loading data:', error));
         }
@@ -99,10 +97,10 @@
             const shuffled = [...options].sort(() => Math.random() - 0.5);
             const selected = shuffled.slice(0, 4);
 
-            // 結果を表示
+            // 結果を表示、各項目の頭に「☆」を追加
             for (let i = 0; i < 4; i++) {
                 const resultElement = document.getElementById(`result${i + 1}`);
-                resultElement.innerHTML = selected[i] || '結果がありません'; // innerHTMLを使用
+                resultElement.innerHTML = selected[i] ? `☆ ${selected[i]}` : '結果がありません';
             }
         }
 
