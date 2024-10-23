@@ -46,7 +46,7 @@
 </head>
 <body>
 <div class="title-text">
-        最終更新2024/08/11：<a href="https://depacho-link.my.canva.site/" class="link" target="_blank">作成者@deppa_game</a> <!-- リンクを追加 -->
+        最終更新2024/10/23：<a href="https://depacho-link.my.canva.site/" class="link" target="_blank">作成者@deppa_game</a> <!-- リンクを追加 -->
     </div>
     <img src="https://raw.githubusercontent.com/depacho/selfcaosshuffle/main/randomlogo.png" alt="title" /> <!-- タイトル画像を設定 -->
 
@@ -58,6 +58,8 @@
             <label for="data1">キラーパーク</label>
             <input type="radio" id="data2" name="dataSource" value="data2">
             <label for="data2">サバイバーパーク</label>
+            <input type="radio" id="data3" name="dataSource" value="data3">
+            <label for="data3">おじさんの絵のパーク</label>
         </div>
     </div>
     <div id="results">
@@ -70,7 +72,8 @@
         let options = [];
         const dataSources = {
             data1: 'data1.html',
-            data2: 'data2.html'
+            data2: 'data2.html'.
+            data3: 'data3.html'
         };
 
         function loadOptions() {
